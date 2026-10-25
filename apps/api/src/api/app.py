@@ -1,6 +1,6 @@
-from fastapi import FastAPI, Request
-from pydantic import BaseModel
-
+from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+from api.api.endpoints import api_router
 
 import logging
 
@@ -12,23 +12,14 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 
-class ChatRequest(BaseModel):
-    provider: str
-    models_name: str
-    messages: list[dict]
-
-class ChatResponse(BaseModel):
-    message: str
-
-
 app = FastAPI()
 
-@app.post("/chat")
-def chat(
-    request: Request,
-    payload: ChatRequest
-) -> ChatResponse:
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
-    result = run_llm(payload.provider, payload.models_name, payload.messages)
-
-    return ChatResponse(message=result)
+app.include_router(api_router)
