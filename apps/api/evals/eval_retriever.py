@@ -4,6 +4,7 @@ from qdrant_client import QdrantClient
 from langsmith import Client
 
 from openai import AsyncOpenAI
+from langsmith.wrappers import wrap_openai
 
 from ragas.llms import llm_factory
 from ragas.embeddings.base import embedding_factory
@@ -35,7 +36,7 @@ def build_ragas_clients(openai_client: AsyncOpenAI):
 
 async def ragas_faitfulness(run, example):
 
-    async with AsyncOpenAI() as openai_client:
+    async with wrap_openai(AsyncOpenAI()) as openai_client:
 
         ragas_llm, ragas_embeddings = build_ragas_clients(openai_client)
 
@@ -52,7 +53,7 @@ async def ragas_faitfulness(run, example):
 
 async def ragas_relevancy(run, example):
 
-    async with AsyncOpenAI() as openai_client:
+    async with wrap_openai(AsyncOpenAI()) as openai_client:
 
         ragas_llm, ragas_embeddings = build_ragas_clients(openai_client)
 
