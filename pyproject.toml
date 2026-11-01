@@ -21,6 +21,7 @@ members = ["apps/api", "apps/chatbot_ui"]
 
 [dependency-groups]
 dev = [
+    "cohere>=7.3.0",
     "instructor>=1.16.0",
     "langchain-community>=0.4.0,<0.4.2",
     "matplotlib>=3.11.2",
